@@ -1,235 +1,470 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
   <meta charset="UTF-8" />
-  <title>Mymanager Salary Calculator</title>
+  <title>Payroll Calculator Pro</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
   <style>
     * {
       box-sizing: border-box;
-      font-family: 'Inter', sans-serif;
+      font-family: 'Poppins', sans-serif;
     }
 
     body {
       margin: 0;
       min-height: 100vh;
-      background: linear-gradient(135deg, #020617, #1e293b);
+      background: linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #0f172a 100%);
       display: flex;
       align-items: center;
       justify-content: center;
-      padding: 24px;
+      padding: 20px;
+      overflow-x: hidden;
     }
 
-    .app {
+    .container {
       width: 100%;
-      max-width: 900px;
-      background: #fff;
-      border-radius: 22px;
-      box-shadow: 0 40px 80px rgba(0, 0, 0, 0.55);
-      padding: 28px;
+      max-width: 1200px;
     }
 
     .header {
-      display: flex;
-      align-items: center;
-      gap: 14px;
-      margin-bottom: 24px;
-    }
-
-    .header img {
-      height: 42px;
+      text-align: center;
+      margin-bottom: 40px;
+      animation: slideDown 0.8s ease-out;
     }
 
     .header h1 {
-      font-size: 22px;
-      font-weight: 800;
-      margin: 0;
+      font-size: 48px;
+      font-weight: 900;
+      margin: 0 0 8px 0;
+      background: linear-gradient(135deg, #00d4ff, #0099ff, #00d4ff);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      letter-spacing: -1px;
     }
 
     .header p {
-      font-size: 13px;
-      color: #64748b;
+      font-size: 16px;
+      color: #94a3b8;
       margin: 0;
+      font-weight: 300;
+      letter-spacing: 0.5px;
     }
 
-    .content {
-      display: flex;
-      gap: 24px;
+    .main {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 32px;
+      margin-bottom: 40px;
     }
 
-    @media(max-width:768px) {
-      .content {
-        flex-direction: column;
+    @media(max-width: 1024px) {
+      .main {
+        grid-template-columns: 1fr;
       }
     }
 
-    .left,
-    .right {
-      flex: 1;
+    .card {
+      background: rgba(15, 23, 42, 0.8);
+      backdrop-filter: blur(20px);
+      border: 1px solid rgba(0, 212, 255, 0.2);
+      border-radius: 24px;
+      padding: 32px;
+      box-shadow: 0 8px 32px rgba(0, 212, 255, 0.1);
+      animation: fadeInUp 0.8s ease-out;
+    }
+
+    .card.results {
+      background: linear-gradient(135deg, rgba(15, 23, 42, 0.9), rgba(30, 41, 59, 0.9));
+      border: 1px solid rgba(34, 197, 94, 0.3);
+      animation: fadeInUp 0.8s ease-out 0.2s both;
+    }
+
+    @keyframes slideDown {
+      from {
+        opacity: 0;
+        transform: translateY(-30px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    @keyframes fadeInUp {
+      from {
+        opacity: 0;
+        transform: translateY(30px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
     }
 
     .field {
-      margin-bottom: 16px;
+      margin-bottom: 20px;
     }
 
     label {
       font-size: 13px;
-      font-weight: 600;
-      color: #334155;
-      margin-bottom: 6px;
+      font-weight: 700;
+      color: #cbd5f5;
+      margin-bottom: 10px;
       display: block;
+      text-transform: uppercase;
+      letter-spacing: 0.8px;
     }
 
     input {
       width: 100%;
-      padding: 13px 15px;
-      border-radius: 12px;
-      border: 1px solid #c7d2fe;
-      font-size: 15px;
+      padding: 16px;
+      background: rgba(30, 41, 59, 0.6);
+      border: 2px solid rgba(0, 212, 255, 0.2);
+      border-radius: 14px;
+      font-size: 16px;
+      color: #e2e8f0;
+      font-weight: 600;
+      transition: all 0.3s ease;
+    }
+
+    input::placeholder {
+      color: #64748b;
     }
 
     input:focus {
       outline: none;
-      border-color: #2563eb;
-      box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15);
+      border-color: #00d4ff;
+      background: rgba(30, 41, 59, 0.9);
+      box-shadow: 0 0 20px rgba(0, 212, 255, 0.3);
     }
 
     .actions {
       display: flex;
-      gap: 12px;
-      margin-top: 10px;
+      gap: 14px;
+      margin-top: 32px;
     }
 
     button {
       flex: 1;
-      padding: 14px;
+      padding: 16px;
       border-radius: 14px;
       font-size: 15px;
       font-weight: 700;
       border: none;
       cursor: pointer;
+      text-transform: uppercase;
+      letter-spacing: 0.8px;
+      transition: all 0.3s ease;
+      font-family: 'Poppins', sans-serif;
     }
 
     .btn-primary {
-      background: linear-gradient(135deg, #2563eb, #1d4ed8);
-      color: #fff;
+      background: linear-gradient(135deg, #00d4ff, #0099ff);
+      color: #0f172a;
+      box-shadow: 0 8px 24px rgba(0, 212, 255, 0.3);
     }
 
     .btn-primary:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 12px 32px rgba(0, 212, 255, 0.4);
+    }
+
+    .btn-primary:active {
       transform: translateY(-1px);
-      box-shadow: 0 10px 25px rgba(37, 99, 235, 0.35);
     }
 
     .btn-secondary {
-      background: #e2e8f0;
+      background: rgba(71, 85, 105, 0.5);
+      color: #e2e8f0;
+      border: 1px solid rgba(71, 85, 105, 0.8);
     }
 
-    .summary {
-      background: #f8fafc;
-      border-radius: 18px;
-      padding: 18px;
+    .btn-secondary:hover {
+      background: rgba(71, 85, 105, 0.7);
+      transform: translateY(-3px);
     }
 
     .placeholder {
       text-align: center;
       color: #64748b;
-      font-size: 14px;
-      padding: 40px 10px;
+      font-size: 16px;
+      padding: 60px 20px;
+      font-weight: 300;
     }
 
-    .row {
+    .placeholder-icon {
+      font-size: 48px;
+      margin-bottom: 16px;
+      opacity: 0.5;
+    }
+
+    .result-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+      margin-bottom: 24px;
+    }
+
+    @media(max-width: 640px) {
+      .result-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .result-item {
+      background: rgba(0, 212, 255, 0.05);
+      border: 1px solid rgba(0, 212, 255, 0.15);
+      border-radius: 14px;
+      padding: 18px;
+      transition: all 0.3s ease;
+    }
+
+    .result-item:hover {
+      border-color: rgba(0, 212, 255, 0.4);
+      background: rgba(0, 212, 255, 0.1);
+    }
+
+    .result-label {
+      font-size: 12px;
+      color: #94a3b8;
+      text-transform: uppercase;
+      letter-spacing: 0.6px;
+      font-weight: 600;
+      margin-bottom: 8px;
+    }
+
+    .result-value {
+      font-size: 24px;
+      font-weight: 800;
+      color: #00d4ff;
+    }
+
+    .breakdown {
+      background: rgba(71, 85, 105, 0.3);
+      border-radius: 14px;
+      padding: 20px;
+      margin-bottom: 24px;
+    }
+
+    .breakdown-title {
+      font-size: 14px;
+      font-weight: 700;
+      color: #cbd5f5;
+      text-transform: uppercase;
+      letter-spacing: 0.8px;
+      margin-bottom: 16px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .breakdown-title::before {
+      content: '';
+      width: 4px;
+      height: 16px;
+      background: linear-gradient(135deg, #00d4ff, #0099ff);
+      border-radius: 2px;
+    }
+
+    .breakdown-row {
       display: flex;
       justify-content: space-between;
-      padding: 10px 0;
+      align-items: center;
+      padding: 12px 0;
       font-size: 14px;
-      border-bottom: 1px dashed #cbd5f5;
+      border-bottom: 1px solid rgba(71, 85, 105, 0.4);
+      color: #cbd5f5;
     }
 
-    .row:last-child {
+    .breakdown-row:last-child {
       border-bottom: none;
     }
 
-    .row span:last-child {
-      font-weight: 600;
+    .breakdown-row .label {
+      font-weight: 500;
     }
 
-    .deduction {
-      color: #dc2626;
+    .breakdown-row .value {
       font-weight: 700;
+      font-family: 'Courier New', monospace;
+      color: #e2e8f0;
     }
 
-    .total {
-      margin-top: 14px;
-      background: linear-gradient(135deg, #16a34a, #22c55e);
-      color: #fff;
-      padding: 14px;
-      border-radius: 14px;
+    .breakdown-row.addition .value {
+      color: #22c55e;
+    }
+
+    .breakdown-row.deduction .value {
+      color: #ef4444;
+    }
+
+    .grand-total {
+      background: linear-gradient(135deg, #00d4ff, #0099ff);
+      color: #0f172a;
+      padding: 24px;
+      border-radius: 16px;
       display: flex;
       justify-content: space-between;
-      font-size: 17px;
-      font-weight: 800;
+      align-items: center;
+      margin-top: 24px;
+      box-shadow: 0 12px 32px rgba(0, 212, 255, 0.3);
+    }
+
+    .grand-total-label {
+      font-size: 14px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.8px;
+      opacity: 0.9;
+    }
+
+    .grand-total-value {
+      font-size: 36px;
+      font-weight: 900;
+      font-family: 'Courier New', monospace;
+      letter-spacing: 1px;
+    }
+
+    .hidden {
+      display: none !important;
     }
 
     .hint {
       text-align: center;
-      font-size: 11px;
+      font-size: 12px;
       color: #64748b;
-      margin-top: 12px;
+      margin-top: 20px;
+      font-weight: 300;
+      letter-spacing: 0.5px;
+    }
+
+    .tag {
+      display: inline-block;
+      background: rgba(0, 212, 255, 0.1);
+      border: 1px solid rgba(0, 212, 255, 0.3);
+      color: #00d4ff;
+      padding: 4px 12px;
+      border-radius: 20px;
+      font-size: 11px;
+      font-weight: 700;
+      margin-right: 8px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    @media(max-width: 768px) {
+      .header h1 {
+        font-size: 36px;
+      }
+
+      .card {
+        padding: 24px;
+      }
+
+      .grand-total {
+        flex-direction: column;
+        gap: 16px;
+        text-align: center;
+      }
+
+      .grand-total-value {
+        font-size: 28px;
+      }
     }
   </style>
 </head>
-
 <body>
-  <div class="app">
+  <div class="container">
     <div class="header">
-      <img src="https://mymanager.com/assets/blacklogo-7f38aa0d.png">
-      <div>
-        <h1>Mymanager Salary Calculator</h1>
-        <p>HR Payroll · Daily OT · Holiday · Leave Deduction</p>
-      </div>
+      <img src="https://mymanager.com/assets/logo-bd149463.png" style="height: 50px; margin-bottom: 16px;">
+      <h1>💰 PAYROLL CALCULATOR</h1>
     </div>
-    <div class="content">
-      <div class="left">
+
+    <div class="main">
+      <div class="card">
         <div class="field">
-          <label>Monthly Salary</label>
-          <input type="number" id="monthlySalary">
+          <label>Monthly Salary (৳)</label>
+          <input type="number" id="monthlySalary" placeholder="e.g., 88000">
         </div>
+
         <div class="field">
           <label>Daily Overtime Days</label>
-          <input type="number" id="dailyOTDays" placeholder="0 if no daily overtime">
+          <input type="number" id="dailyOTDays" placeholder="0 if none" min="0">
         </div>
+
         <div class="field">
           <label>Holiday OT Days</label>
-          <input type="number" id="holidayDays" placeholder="0 if none">
+          <input type="number" id="holidayDays" placeholder="0 if none" min="0">
         </div>
+
         <div class="field">
-          <label>Leave Days Taken (Allowed: 3)</label>
-          <input type="number" id="leaveDays">
+          <label>Leave Days Taken <span class="tag">Max 3 Allowed</span></label>
+          <input type="number" id="leaveDays" placeholder="0 if none" min="0">
         </div>
+
         <div class="actions">
-          <button class="btn-primary" onclick="calculate()">Calculate</button>
-          <button class="btn-secondary" onclick="resetForm()">Reset</button>
+          <button class="btn-primary" onclick="calculate()">💻 Calculate</button>
+          <button class="btn-secondary" onclick="resetForm()">🔄 Reset</button>
         </div>
+
+        <div class="hint">Press <b>Enter</b> to Calculate · Press <b>Esc</b> to Reset</div>
       </div>
-      <div class="right">
-        <div class="summary" id="summary">
-          <div class="placeholder" id="placeholder">No calculation yet.<br>Enter values and press <b>Calculate</b>.
-          </div>
-          <div id="result" style="display:none;">
-            <div class="row"><span>Daily Salary</span><span id="dailySalary"></span></div>
-            <div class="row"><span>Hourly Salary</span><span id="hourlySalary"></span></div>
-            <div class="row" id="otRow"><span>Daily OT Pay</span><span id="totalOt"></span></div>
-            <div class="row"><span>Holiday OT</span><span id="holidayOt"></span></div>
-            <div class="row deduction" id="deductionRow"><span>Leave Deduction</span><span id="leaveDeduction"></span>
+
+      <div class="card results">
+        <div id="placeholder" class="placeholder">
+          <div class="placeholder-icon">📊</div>
+          <div>Enter your salary details and click <b>Calculate</b> to see the complete payroll breakdown</div>
+        </div>
+
+        <div id="result" class="hidden">
+          <div class="result-grid">
+            <div class="result-item">
+              <div class="result-label">Daily Salary</div>
+              <div class="result-value" id="dailySalary">৳ 0</div>
             </div>
-            <div class="total"><span>Grand Total</span><span id="grandTotal"></span></div>
+            <div class="result-item">
+              <div class="result-label">Hourly Rate</div>
+              <div class="result-value" id="hourlySalary">৳ 0</div>
+            </div>
+          </div>
+
+          <div class="breakdown">
+            <div class="breakdown-title">Income Components</div>
+            <div class="breakdown-row">
+              <span class="label">Base Salary</span>
+              <span class="value" id="baseSalaryBreak">৳ 0</span>
+            </div>
+            <div class="breakdown-row addition" id="otRow" style="display: none;">
+              <span class="label">Daily OT Pay (2x hourly, 2hrs/day)</span>
+              <span class="value" id="totalOtBreak">+ ৳ 0</span>
+            </div>
+            <div class="breakdown-row addition">
+              <span class="label">Holiday OT (2x daily salary)</span>
+              <span class="value" id="holidayOtBreak">+ ৳ 0</span>
+            </div>
+          </div>
+
+          <div class="breakdown">
+            <div class="breakdown-title">Deductions</div>
+            <div class="breakdown-row deduction" id="deductionRow" style="display: none;">
+              <span class="label">Leave Deduction</span>
+              <span class="value" id="leaveDeductionBreak">- ৳ 0</span>
+            </div>
+            <div class="breakdown-row" id="noDeductionRow">
+              <span class="label">Leave Status</span>
+              <span class="value" style="color: #22c55e;">✓ No Deduction</span>
+            </div>
+          </div>
+
+          <div class="grand-total">
+            <div class="grand-total-label">💰 Grand Total</div>
+            <div class="grand-total-value" id="grandTotal">৳ 0</div>
           </div>
         </div>
       </div>
     </div>
-    <div class="hint">Press <b>Enter</b> to Calculate · <b>Esc</b> to Reset</div>
   </div>
 
   <script>
@@ -238,49 +473,72 @@
       if (e.key === "Escape") resetForm();
     });
 
-function calculate(){
-  const monthly = +monthlySalary.value || 0;
-  const otDays = +dailyOTDays.value || 0;
-  const holiday = +holidayDays.value || 0;
-  const leave = +leaveDays.value || 0;
+    function calculate() {
+      const monthly = parseFloat(monthlySalary.value) || 0;
+      const otDays = parseFloat(dailyOTDays.value) || 0;
+      const holidayOTDays = parseFloat(document.getElementById("holidayDays").value) || 0;
+      const leaveDays = parseFloat(document.getElementById("leaveDays").value) || 0;
 
-  if(!monthly){ alert("Enter monthly salary"); return; }
+      if (!monthly) {
+        alert("❌ Please enter monthly salary");
+        return;
+      }
 
-  const daily = monthly / 30;
-  const hourly = daily / 8;
+      // Calculations
+      const daily = monthly / 30;
+      const hourly = daily / 8;
 
-  const dailyOTPay = otDays > 0 ? hourly*2*2 : 0;
-  const totalOT = dailyOTPay * otDays;
+      // Daily OT: 2 hours per day at 2x hourly rate
+      const dailyOTPay = hourly * 2 * 2; // 2 hours × 2x rate
+      const totalOT = dailyOTPay * otDays;
 
-  const holidayOT = daily * 2 * holiday;
-  const excessLeave = Math.max(0, leave-3);
-  const leaveDeduction = excessLeave*daily;
+      // Holiday OT: 2x daily salary per day
+      const totalHolidayOT = daily * 2 * holidayOTDays;
 
-  const grandTotalValue = monthly + totalOT + holidayOT - leaveDeduction;
+      // Leave deduction: Only if more than 3 days
+      const excessLeave = Math.max(0, leaveDays - 3);
+      const leaveDeduction = excessLeave * daily;
 
-  placeholder.style.display="none";
-  result.style.display="block";
+      // Grand total
+      const grandTotalValue = monthly + totalOT + totalHolidayOT - leaveDeduction;
 
-  dailySalary.innerText=`৳ ${daily.toFixed(2)}`;
-  hourlySalary.innerText=`৳ ${hourly.toFixed(2)}`;
+      // Update UI
+      document.getElementById("placeholder").classList.add("hidden");
+      document.getElementById("result").classList.remove("hidden");
 
-  if(otDays>0){ otRow.style.display="flex"; totalOt.innerText=`৳ ${totalOT.toFixed(2)}`; }
-  else{ otRow.style.display="none"; }
+      document.getElementById("dailySalary").innerText = `৳ ${daily.toFixed(2)}`;
+      document.getElementById("hourlySalary").innerText = `৳ ${hourly.toFixed(2)}`;
+      document.getElementById("baseSalaryBreak").innerText = `৳ ${monthly.toFixed(2)}`;
 
-  holidayOt.innerText=`৳ ${holidayOT.toFixed(2)}`;
+      // Daily OT Row
+      if (otDays > 0) {
+        document.getElementById("otRow").style.display = "flex";
+        document.getElementById("totalOtBreak").innerText = `+ ৳ ${totalOT.toFixed(2)}`;
+      } else {
+        document.getElementById("otRow").style.display = "none";
+      }
 
-  if(leaveDeduction>0){ deductionRow.style.display="flex"; leaveDeduction.innerText=`- ৳ ${leaveDeduction.toFixed(2)} (${excessLeave} day)`; }
-  else{ deductionRow.style.display="none"; }
+      // Holiday OT
+      document.getElementById("holidayOtBreak").innerText = `+ ৳ ${totalHolidayOT.toFixed(2)}`;
 
-  document.getElementById("grandTotal").innerText = `৳ ${grandTotalValue.toFixed(2)}`;
-}
+      // Leave Deduction
+      if (leaveDeduction > 0) {
+        document.getElementById("deductionRow").style.display = "flex";
+        document.getElementById("noDeductionRow").style.display = "none";
+        document.getElementById("leaveDeductionBreak").innerText = `- ৳ ${leaveDeduction.toFixed(2)} (${excessLeave} day${excessLeave > 1 ? 's' : ''})`;
+      } else {
+        document.getElementById("deductionRow").style.display = "none";
+        document.getElementById("noDeductionRow").style.display = "flex";
+      }
+
+      document.getElementById("grandTotal").innerText = `৳ ${grandTotalValue.toFixed(2)}`;
+    }
 
     function resetForm() {
       document.querySelectorAll("input").forEach(i => i.value = "");
-      result.style.display = "none";
-      placeholder.style.display = "block";
+      document.getElementById("result").classList.add("hidden");
+      document.getElementById("placeholder").classList.remove("hidden");
     }
   </script>
 </body>
-
 </html>
