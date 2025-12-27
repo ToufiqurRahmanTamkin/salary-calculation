@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Salary Breakdown Calculator</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f5f7fa;
+      padding: 20px;
+    }
+
+    .container {
+      max-width: 500px;
+      margin: auto;
+      background: #fff;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    }
+
+    h2 {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+
+    label {
+      font-weight: bold;
+      display: block;
+      margin-top: 15px;
+    }
+
+    input {
+      width: 100%;
+      padding: 10px;
+      margin-top: 5px;
+      border-radius: 5px;
+      border: 1px solid #ccc;
+    }
+
+    button {
+      width: 100%;
+      margin-top: 20px;
+      padding: 12px;
+      background: #2563eb;
+      color: #fff;
+      font-size: 16px;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background: #1e40af;
+    }
+
+    .result {
+      margin-top: 20px;
+      background: #f1f5f9;
+      padding: 15px;
+      border-radius: 6px;
+    }
+
+    .result p {
+      margin: 8px 0;
+    }
+
+    .total {
+      font-size: 18px;
+      font-weight: bold;
+      margin-top: 10px;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <h2>Salary Breakdown Calculator</h2>
+
+    <label>Monthly Salary</label>
+    <input type="number" id="monthlySalary" placeholder="e.g. 88000" />
+
+    <label>Total Working Days (with daily OT)</label>
+    <input type="number" id="workingDays" placeholder="e.g. 26" />
+
+    <label>Holiday OT Days</label>
+    <input type="number" id="holidayDays" placeholder="e.g. 2" />
+
+    <button onclick="calculate()">Calculate</button>
+
+    <div class="result" id="result" style="display:none;">
+      <p id="dailySalary"></p>
+      <p id="hourlySalary"></p>
+      <p id="dailyOt"></p>
+      <p id="totalOt"></p>
+      <p id="holidayOt"></p>
+      <p class="total" id="grandTotal"></p>
+    </div>
+  </div>
+
+  <script>
+    function calculate() {
+      const monthlySalary = Number(document.getElementById('monthlySalary').value);
+      const workingDays = Number(document.getElementById('workingDays').value);
+      const holidayDays = Number(document.getElementById('holidayDays').value);
+
+      if (!monthlySalary) return alert("Please enter monthly salary");
+
+      const dailySalary = monthlySalary / 30;
+      const hourlySalary = dailySalary / 8;
+
+      const dailyOvertimePay = hourlySalary * 2 * 2; // 2 hrs × 2x
+      const totalOvertimePay = dailyOvertimePay * workingDays;
+
+      const holidayOvertimePay = dailySalary * 2 * holidayDays;
+
+      const grandTotal =
+        monthlySalary +
+        totalOvertimePay +
+        holidayOvertimePay;
+
+      document.getElementById("result").style.display = "block";
+
+      document.getElementById("dailySalary").innerText =
+        `Daily Salary: ৳ ${dailySalary.toFixed(2)}`;
+
+      document.getElementById("hourlySalary").innerText =
+        `Hourly Salary: ৳ ${hourlySalary.toFixed(2)}`;
+
+      document.getElementById("dailyOt").innerText =
+        `Daily Overtime Pay (2 hrs × 2x): ৳ ${dailyOvertimePay.toFixed(2)}`;
+
+      document.getElementById("totalOt").innerText =
+        `Total Overtime Pay: ৳ ${totalOvertimePay.toFixed(2)}`;
+
+      document.getElementById("holidayOt").innerText =
+        `Holiday Overtime Pay: ৳ ${holidayOvertimePay.toFixed(2)}`;
+
+      document.getElementById("grandTotal").innerText =
+        `Grand Total Salary: ৳ ${grandTotal.toFixed(2)}`;
+    }
+  </script>
+
+</body>
+</html>
