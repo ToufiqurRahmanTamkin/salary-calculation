@@ -1,12 +1,11 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8" />
   <title>Mymanager Salary Calculator</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <style>
     * {
       box-sizing: border-box;
@@ -16,47 +15,63 @@
     body {
       margin: 0;
       min-height: 100vh;
-      background: linear-gradient(135deg, #0f172a, #1e293b);
+      background: linear-gradient(135deg, #020617, #1e293b);
       display: flex;
       align-items: center;
       justify-content: center;
-      padding: 20px;
-      color: #0f172a;
+      padding: 24px;
     }
 
-    .card {
+    .app {
       width: 100%;
-      max-width: 520px;
-      background: rgba(255, 255, 255, 0.95);
-      border-radius: 16px;
+      max-width: 900px;
+      background: #fff;
+      border-radius: 22px;
+      box-shadow: 0 40px 80px rgba(0, 0, 0, 0.55);
       padding: 28px;
-      box-shadow: 0 25px 60px rgba(0, 0, 0, 0.35);
     }
 
     .header {
-      text-align: center;
-      margin-bottom: 25px;
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      margin-bottom: 24px;
     }
 
     .header img {
       height: 42px;
-      margin-bottom: 10px;
     }
 
     .header h1 {
       font-size: 22px;
-      font-weight: 700;
+      font-weight: 800;
       margin: 0;
     }
 
     .header p {
-      font-size: 14px;
-      color: #475569;
-      margin-top: 4px;
+      font-size: 13px;
+      color: #64748b;
+      margin: 0;
+    }
+
+    .content {
+      display: flex;
+      gap: 24px;
+    }
+
+    @media(max-width:768px) {
+      .content {
+        flex-direction: column;
+      }
+    }
+
+    .left,
+    .right {
+      flex: 1;
     }
 
     .field {
-      margin-bottom: 15px;
+      margin-bottom: 16px;
     }
 
     label {
@@ -69,165 +84,203 @@
 
     input {
       width: 100%;
-      padding: 12px 14px;
-      border-radius: 10px;
-      border: 1px solid #cbd5f5;
+      padding: 13px 15px;
+      border-radius: 12px;
+      border: 1px solid #c7d2fe;
       font-size: 15px;
-      outline: none;
-      transition: all 0.2s;
     }
 
     input:focus {
+      outline: none;
       border-color: #2563eb;
-      box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.15);
+      box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15);
+    }
+
+    .actions {
+      display: flex;
+      gap: 12px;
+      margin-top: 10px;
     }
 
     button {
-      width: 100%;
-      margin-top: 10px;
+      flex: 1;
       padding: 14px;
-      font-size: 16px;
-      font-weight: 600;
-      border-radius: 12px;
+      border-radius: 14px;
+      font-size: 15px;
+      font-weight: 700;
       border: none;
-      background: linear-gradient(135deg, #2563eb, #1d4ed8);
-      color: #fff;
       cursor: pointer;
-      transition: transform 0.15s ease, box-shadow 0.15s ease;
     }
 
-    button:hover {
+    .btn-primary {
+      background: linear-gradient(135deg, #2563eb, #1d4ed8);
+      color: #fff;
+    }
+
+    .btn-primary:hover {
       transform: translateY(-1px);
       box-shadow: 0 10px 25px rgba(37, 99, 235, 0.35);
     }
 
-    .result {
-      margin-top: 22px;
-      display: none;
+    .btn-secondary {
+      background: #e2e8f0;
     }
 
-    .result-card {
+    .summary {
       background: #f8fafc;
-      border-radius: 12px;
-      padding: 14px;
-      margin-bottom: 10px;
+      border-radius: 18px;
+      padding: 18px;
+    }
+
+    .placeholder {
+      text-align: center;
+      color: #64748b;
+      font-size: 14px;
+      padding: 40px 10px;
+    }
+
+    .row {
       display: flex;
       justify-content: space-between;
+      padding: 10px 0;
       font-size: 14px;
+      border-bottom: 1px dashed #cbd5f5;
     }
 
-    .result-card span:last-child {
+    .row:last-child {
+      border-bottom: none;
+    }
+
+    .row span:last-child {
       font-weight: 600;
     }
 
-    .total {
-      background: linear-gradient(135deg, #16a34a, #22c55e);
-      color: #fff;
-      font-size: 17px;
+    .deduction {
+      color: #dc2626;
       font-weight: 700;
     }
 
-    .footer-note {
+    .total {
+      margin-top: 14px;
+      background: linear-gradient(135deg, #16a34a, #22c55e);
+      color: #fff;
+      padding: 14px;
+      border-radius: 14px;
+      display: flex;
+      justify-content: space-between;
+      font-size: 17px;
+      font-weight: 800;
+    }
+
+    .hint {
       text-align: center;
-      margin-top: 18px;
-      font-size: 12px;
+      font-size: 11px;
       color: #64748b;
+      margin-top: 12px;
     }
   </style>
 </head>
+
 <body>
-
-  <div class="card">
+  <div class="app">
     <div class="header">
-      <img src="https://mymanager.com/assets/blacklogo-7f38aa0d.png" alt="Mymanager Logo">
-      <h1>Mymanager Salary Calculator</h1>
-      <p>Smart overtime & holiday breakdown</p>
-    </div>
-
-    <div class="field">
-      <label>Monthly Salary</label>
-      <input type="number" id="monthlySalary" placeholder="15000">
-    </div>
-
-    <div class="field">
-      <label>Working Days (with daily OT)</label>
-      <input type="number" id="workingDays" placeholder="10">
-    </div>
-
-    <div class="field">
-      <label>Holiday OT Days</label>
-      <input type="number" id="holidayDays" placeholder="1">
-    </div>
-
-    <button onclick="calculate()">Calculate Salary</button>
-
-    <div class="result" id="result">
-      <div class="result-card">
-        <span>Daily Salary</span>
-        <span id="dailySalary"></span>
-      </div>
-
-      <div class="result-card">
-        <span>Hourly Salary</span>
-        <span id="hourlySalary"></span>
-      </div>
-
-      <div class="result-card">
-        <span>Daily OT (2 hrs × 2x)</span>
-        <span id="dailyOt"></span>
-      </div>
-
-      <div class="result-card">
-        <span>Total OT Pay</span>
-        <span id="totalOt"></span>
-      </div>
-
-      <div class="result-card">
-        <span>Holiday OT Pay</span>
-        <span id="holidayOt"></span>
-      </div>
-
-      <div class="result-card total">
-        <span>Grand Total</span>
-        <span id="grandTotal"></span>
+      <img src="https://mymanager.com/assets/blacklogo-7f38aa0d.png">
+      <div>
+        <h1>Mymanager Salary Calculator</h1>
+        <p>HR Payroll · Daily OT · Holiday · Leave Deduction</p>
       </div>
     </div>
-
-    <div class="footer-note">
-      © Mymanager • Payroll Tools
+    <div class="content">
+      <div class="left">
+        <div class="field">
+          <label>Monthly Salary</label>
+          <input type="number" id="monthlySalary">
+        </div>
+        <div class="field">
+          <label>Daily Overtime Days</label>
+          <input type="number" id="dailyOTDays" placeholder="0 if no daily overtime">
+        </div>
+        <div class="field">
+          <label>Holiday OT Days</label>
+          <input type="number" id="holidayDays" placeholder="0 if none">
+        </div>
+        <div class="field">
+          <label>Leave Days Taken (Allowed: 3)</label>
+          <input type="number" id="leaveDays">
+        </div>
+        <div class="actions">
+          <button class="btn-primary" onclick="calculate()">Calculate</button>
+          <button class="btn-secondary" onclick="resetForm()">Reset</button>
+        </div>
+      </div>
+      <div class="right">
+        <div class="summary" id="summary">
+          <div class="placeholder" id="placeholder">No calculation yet.<br>Enter values and press <b>Calculate</b>.
+          </div>
+          <div id="result" style="display:none;">
+            <div class="row"><span>Daily Salary</span><span id="dailySalary"></span></div>
+            <div class="row"><span>Hourly Salary</span><span id="hourlySalary"></span></div>
+            <div class="row" id="otRow"><span>Daily OT Pay</span><span id="totalOt"></span></div>
+            <div class="row"><span>Holiday OT</span><span id="holidayOt"></span></div>
+            <div class="row deduction" id="deductionRow"><span>Leave Deduction</span><span id="leaveDeduction"></span>
+            </div>
+            <div class="total"><span>Grand Total</span><span id="grandTotal"></span></div>
+          </div>
+        </div>
+      </div>
     </div>
+    <div class="hint">Press <b>Enter</b> to Calculate · <b>Esc</b> to Reset</div>
   </div>
 
   <script>
-    function calculate() {
-      const monthlySalary = Number(document.getElementById("monthlySalary").value);
-      const workingDays = Number(document.getElementById("workingDays").value);
-      const holidayDays = Number(document.getElementById("holidayDays").value);
+    document.addEventListener("keydown", e => {
+      if (e.key === "Enter") calculate();
+      if (e.key === "Escape") resetForm();
+    });
 
-      if (!monthlySalary) {
-        alert("Please enter monthly salary");
-        return;
-      }
+function calculate(){
+  const monthly = +monthlySalary.value || 0;
+  const otDays = +dailyOTDays.value || 0;
+  const holiday = +holidayDays.value || 0;
+  const leave = +leaveDays.value || 0;
 
-      const dailySalary = monthlySalary / 30;
-      const hourlySalary = dailySalary / 8;
+  if(!monthly){ alert("Enter monthly salary"); return; }
 
-      const dailyOT = hourlySalary * 2 * 2;
-      const totalOT = dailyOT * workingDays;
-      const holidayOT = dailySalary * 2 * holidayDays;
+  const daily = monthly / 30;
+  const hourly = daily / 8;
 
-      const grandTotal = monthlySalary + totalOT + holidayOT;
+  const dailyOTPay = otDays > 0 ? hourly*2*2 : 0;
+  const totalOT = dailyOTPay * otDays;
 
-      document.getElementById("result").style.display = "block";
+  const holidayOT = daily * 2 * holiday;
+  const excessLeave = Math.max(0, leave-3);
+  const leaveDeduction = excessLeave*daily;
 
-      document.getElementById("dailySalary").innerText = `৳ ${dailySalary.toFixed(2)}`;
-      document.getElementById("hourlySalary").innerText = `৳ ${hourlySalary.toFixed(2)}`;
-      document.getElementById("dailyOt").innerText = `৳ ${dailyOT.toFixed(2)}`;
-      document.getElementById("totalOt").innerText = `৳ ${totalOT.toFixed(2)}`;
-      document.getElementById("holidayOt").innerText = `৳ ${holidayOT.toFixed(2)}`;
-      document.getElementById("grandTotal").innerText = `৳ ${grandTotal.toFixed(2)}`;
+  const grandTotalValue = monthly + totalOT + holidayOT - leaveDeduction;
+
+  placeholder.style.display="none";
+  result.style.display="block";
+
+  dailySalary.innerText=`৳ ${daily.toFixed(2)}`;
+  hourlySalary.innerText=`৳ ${hourly.toFixed(2)}`;
+
+  if(otDays>0){ otRow.style.display="flex"; totalOt.innerText=`৳ ${totalOT.toFixed(2)}`; }
+  else{ otRow.style.display="none"; }
+
+  holidayOt.innerText=`৳ ${holidayOT.toFixed(2)}`;
+
+  if(leaveDeduction>0){ deductionRow.style.display="flex"; leaveDeduction.innerText=`- ৳ ${leaveDeduction.toFixed(2)} (${excessLeave} day)`; }
+  else{ deductionRow.style.display="none"; }
+
+  document.getElementById("grandTotal").innerText = `৳ ${grandTotalValue.toFixed(2)}`;
+}
+
+    function resetForm() {
+      document.querySelectorAll("input").forEach(i => i.value = "");
+      result.style.display = "none";
+      placeholder.style.display = "block";
     }
   </script>
-
 </body>
+
 </html>
